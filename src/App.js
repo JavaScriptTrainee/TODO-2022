@@ -1,12 +1,13 @@
 import logo from './logo.svg';
 import './App.css';
-import {TodoItem} from "./components/TodoItem";
+import {Todos} from "./components/Todos";
+import {todoList} from "./store"
 
 function App() {
   return (
     <div className="App">
-      <TodoItem>
-      </TodoItem>
+      <Todos initialTodoList={todoList}>
+      </Todos>
     </div>
   );
 }
