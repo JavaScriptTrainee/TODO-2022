@@ -1,52 +1,66 @@
+import {InputTodo} from "../InputTodo";
 import {TodoItem} from "../TodoItem";
 import {DoneItem} from "../DoneItem";
 import {useState} from "react"
 
 export function Todos({initialTodoList}){
+        var doneSum = 0;
         const [todoList, setTodoList] = useState(initialTodoList)
-        const listenEnter = (e)=>{
-            if(e.keyCode === 13){
-                const content = e.target.value; 
-                addTodo(content);   
-                //const newTodoList = [...todoList,content]
-                //setTodoList(newTodoList)    
+    
+        const handleInputChange = (keyCode,content)=>{
+            console.log("here",keyCode);
+            if(keyCode === 13){
+                const content = content; 
+                addTodo(content);    
                 console.log("todos",todoList);//Q2:为什么这里todoList不是最新
             };
         };
         const addTodo = (content)=>{
             let objTodoItem ={
-                item:"",
+                item:content,
                 done:false
             };
-            objTodoItem.item = content;
             const newTodoList = [...todoList,objTodoItem]
             setTodoList(newTodoList)
-            console.log("addTodo",newTodoList);
         };
     const handleItemDelete = (index)=>{
         let initTodolist = [...todoList];
         initTodolist.splice(index,1);
         setTodoList(initTodolist)
     }  
+    const handleCheckboxChange = (index)=>{
+        let initTodolist = [...todoList];
+        initTodolist[index].done = !initTodolist[index].done;
+        setTodoList(initTodolist)
+    }  
     const getChildIndex = (index)=>{
         console.log("index",index)
         //return index;
     }
+    todoList.forEach((value)=>{
+        if(value.done === true){
+            doneSum++;
+        }
+    })
     return(
         <div>
-            <input type="text" className="inputBox" placeholder="添加todo" onKeyDown={listenEnter}/>
+            <InputTodo handleInputChange={handleInputChange} addTodo={addTodo} >
+            </InputTodo>
             <h2>待办事项
             </h2>
             <ul>
-                <TodoItem todoList={todoList} handleItemDelete={handleItemDelete} getChildIndex={getChildIndex}>
+                <TodoItem todoList={todoList} handleCheckboxChange={handleCheckboxChange} handleItemDelete={handleItemDelete} getChildIndex={getChildIndex}>
                 </TodoItem>
             </ul>
             <h2>已完成
             </h2>
             <ul>
-                <DoneItem todoList={todoList}>
+                <DoneItem todoList={todoList} handleCheckboxChange={handleCheckboxChange} handleItemDelete={handleItemDelete}>
                 </DoneItem>
             </ul>
+            <h2>
+                {doneSum}已完成/{todoList.length}总数
+            </h2>
         </div>
     )
 }
