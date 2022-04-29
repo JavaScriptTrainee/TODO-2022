@@ -12,27 +12,25 @@ export function Todos(){
     var store = new Store();
     var initialTodoList = store.getTodoList(); 
     console.log("log3",initialTodoList);
-    const [todoList, setTodoList] = useState(initialTodoList)
+    const [todoList, setTodoList] = useState(initialTodoList);
 
-    const addTodo = (content)=>{
+    const addTodo = (content)=>{   //1 it's own state change  ;  2 props'
         let objTodoItem ={
             item:content,
             done:false
         };
-        let curTodoList = store.getTodoList();
-        console.log("log4",curTodoList);
-        let newTodoList = [...curTodoList,objTodoItem]
-        setTodoList(newTodoList);
+        let newTodoList = [...todoList,objTodoItem]
         store.setTodoList(newTodoList);
-        console.log("after log4",store.getTodoList());
-
+        let curTodoList = store.getTodoList();
+        setTodoList(curTodoList);
+        console.log("after log4",curTodoList);
     };
     const handleItemDelete = (index)=>{
-        let curTodoList = store.getTodoList();
-        let newTodoList = [...curTodoList];
+        let newTodoList = [...todoList];
         newTodoList.splice(index,1);
-        setTodoList(newTodoList);
         store.setTodoList(newTodoList);    
+        let curTodoList = store.getTodoList();
+        setTodoList(curTodoList);
     }  
     const handleCheckboxChange = (index)=>{
         let curTodoList = store.getTodoList();
