@@ -1,37 +1,47 @@
 import {InputTodo} from "../InputTodo";
 import {TodoItem} from "../TodoItem";
 import {DoneItem} from "../DoneItem";
+import {Store} from "../../store";
 import {useState} from "react"
+    // var store = new Store();
+    // var initialTodoList = store.getTodoList(); 
+    // console.log("log3",initialTodoList);
 
-export function Todos({initialTodoList}){
-        var doneSum = 0;
-        const [todoList, setTodoList] = useState(initialTodoList)
-    
-        const handleInputChange = (keyCode,content)=>{
-            console.log("here",keyCode);
-            if(keyCode === 13){
-                const content = content; 
-                addTodo(content);    
-                console.log("todos",todoList);//Q2:为什么这里todoList不是最新
-            };
+export function Todos(){
+    var doneSum = 0;
+    var store = new Store();
+    var initialTodoList = store.getTodoList(); 
+    console.log("log3",initialTodoList);
+    const [todoList, setTodoList] = useState(initialTodoList)
+
+    const addTodo = (content)=>{
+        let objTodoItem ={
+            item:content,
+            done:false
         };
-        const addTodo = (content)=>{
-            let objTodoItem ={
-                item:content,
-                done:false
-            };
-            const newTodoList = [...todoList,objTodoItem]
-            setTodoList(newTodoList)
-        };
+        let curTodoList = store.getTodoList();
+        console.log("log4",curTodoList);
+        let newTodoList = [...curTodoList,objTodoItem]
+        setTodoList(newTodoList);
+        store.setTodoList(newTodoList);
+        console.log("after log4",store.getTodoList());
+
+    };
     const handleItemDelete = (index)=>{
-        let initTodolist = [...todoList];
-        initTodolist.splice(index,1);
-        setTodoList(initTodolist)
+        let curTodoList = store.getTodoList();
+        let newTodoList = [...curTodoList];
+        newTodoList.splice(index,1);
+        setTodoList(newTodoList);
+        store.setTodoList(newTodoList);    
     }  
     const handleCheckboxChange = (index)=>{
-        let initTodolist = [...todoList];
-        initTodolist[index].done = !initTodolist[index].done;
-        setTodoList(initTodolist)
+        let curTodoList = store.getTodoList();
+        let newTodoList = [...curTodoList];
+        console.log("log5",newTodoList);
+        newTodoList[index].done = !newTodoList[index].done;
+        console.log("log6",newTodoList);
+        setTodoList(newTodoList);
+        store.setTodoList(newTodoList);   
     }  
     const getChildIndex = (index)=>{
         console.log("index",index)
@@ -44,7 +54,7 @@ export function Todos({initialTodoList}){
     })
     return(
         <div>
-            <InputTodo handleInputChange={handleInputChange} addTodo={addTodo} >
+            <InputTodo addTodo={addTodo} >
             </InputTodo>
             <h2>待办事项
             </h2>

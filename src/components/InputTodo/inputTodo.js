@@ -1,23 +1,25 @@
 import React from "react";
 import './inputTodo.css';
-import { useState } from "react";
-export function InputTodo({addTodo,handleInputChange}){
+import {useState} from "react";
+export function InputTodo({addTodo}){
     const [inputValue,setInputValue] = useState("");
-    const  handleKeyDown = (e)=>{
-             if(e.keyCode === 13){
-                setInputValue(inputValue);
-                handleInputChange(e.keyCode.inputValue); 
-                addTodo(inputValue);    
-            };;
+    const  handleInputChange = (e)=>{
+        setInputValue(e.target.value);
     }
-    const addATodo = ()=>{
-       setInputValue(inputValue); 
-       addTodo(inputValue); 
+    const handleEnter = (e)=>{
+        if(e.keyCode === 13){
+            addTodo(inputValue);
+            setInputValue("");
+        }
+    }
+    const handleSubmit = ()=>{
+        addTodo(inputValue); 
+        setInputValue("");
     }
     return (
         <React.Fragment>
-                    <input type="text" className="inputBox" placeholder="添加todo" value={inputValue} onKeyDown={(e)=>handleKeyDown(e)}/>
-                    <button className="inputButton" onClick={addATodo}>Add</button>
+                    <input type="text" className="inputBox" placeholder="添加todo" value={inputValue} onKeyDown={handleEnter} onChange={handleInputChange}/>
+                    <button className="inputButton" onClick={handleSubmit}>Submit</button>
         </React.Fragment>
     )
 }

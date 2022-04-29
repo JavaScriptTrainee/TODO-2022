@@ -2,7 +2,7 @@ import React from "react"
 import './todoItem.css';
 //import {Todos} from "../Todos";
 export function TodoItem({todoList,handleCheckboxChange,handleItemDelete,getChildIndex}){ 
-    console.log("todoItem",todoList)
+    //console.log("todoItem",todoList)
     return (
         <React.Fragment>
                 {
