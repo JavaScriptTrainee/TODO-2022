@@ -1,45 +1,27 @@
 import {InputTodo} from "../InputTodo";
 import {TodoItem} from "../TodoItem";
 import {DoneItem} from "../DoneItem";
-import {Store} from "../../store";
-import {useState} from "react"
-    // var store = new Store();
-    // var initialTodoList = store.getTodoList(); 
-    // console.log("log3",initialTodoList);
+import {addTodo,delTodo,toggleTodo} from "../../store/action/todoActions";
+import {useSelector,useDispatch} from "react-redux";
 
 export function Todos(){
     var doneSum = 0;
-    var store = new Store();
-    var initialTodoList = store.getTodoList(); 
-    console.log("log3",initialTodoList);
-    const [todoList, setTodoList] = useState(initialTodoList);
+    let todoList = useSelector(state=>state);
+    console.log("todoList",todoList);
+    const disPatch = useDispatch();
 
-    const addTodo = (content)=>{   //1 it's own state change  ;  2 props'
+    const addInputTodo = (content)=>{ 
         let objTodoItem ={
             item:content,
             done:false
         };
-        let newTodoList = [...todoList,objTodoItem]
-        store.setTodoList(newTodoList);
-        let curTodoList = store.getTodoList();
-        setTodoList(curTodoList);
-        console.log("after log4",curTodoList);
+        disPatch(addTodo(objTodoItem));
     };
     const handleItemDelete = (index)=>{
-        let newTodoList = [...todoList];
-        newTodoList.splice(index,1);
-        store.setTodoList(newTodoList);    
-        let curTodoList = store.getTodoList();
-        setTodoList(curTodoList);
+        disPatch(delTodo(index));
     }  
     const handleCheckboxChange = (index)=>{
-        let curTodoList = store.getTodoList();
-        let newTodoList = [...curTodoList];
-        console.log("log5",newTodoList);
-        newTodoList[index].done = !newTodoList[index].done;
-        console.log("log6",newTodoList);
-        setTodoList(newTodoList);
-        store.setTodoList(newTodoList);   
+        disPatch(toggleTodo(index));
     }  
     const getChildIndex = (index)=>{
         console.log("index",index)
@@ -52,7 +34,7 @@ export function Todos(){
     })
     return(
         <div>
-            <InputTodo addTodo={addTodo} >
+            <InputTodo addInputTodo={addInputTodo} >
             </InputTodo>
             <h2>待办事项
             </h2>

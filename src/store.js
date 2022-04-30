@@ -1,4 +1,4 @@
-let InitTodoList = [
+let initTodoList = [
     {
     item:'learn js',
     done:false
@@ -14,7 +14,7 @@ let InitTodoList = [
 ];
 export class Store{
   constructor() {
-    this.todoList = InitTodoList;
+    this.todoList = initTodoList;
   }
   getTodoList() {
     console.log("log1",this.todoList)
